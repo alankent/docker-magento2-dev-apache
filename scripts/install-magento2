@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# This is for developers who want to play with GitHub pushes.
+# It clones from the main GitHub repo.
+# See also http://alankent.wordpress.com/2014/08/02/magento-2-progress-towards-installation-via-composer/
+
+MAGENTO_TAG=0.42.0-beta1
+
+cd /tmp
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
+cd /var/www
+git clone https://github.com/magento/magento2.git
+cd magento2
+git checkout tags/$MAGENTO_TAG
+composer install
+#config repositories.foo composer http://packages.magento.com/
+#composer require magento/sample-data:$MAGENTO_TAG magento/sample-data-media:$MAGENTO_TAG
+
+echo "SetEnv MAGE_MODE developer" >> .htaccess
+
+find . -type d -exec chmod 700 {} \;
+find . -type f -exec chmod 600 {} \;
+
+chown www-data:www-data -R /var/www/magento2
