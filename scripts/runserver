@@ -33,8 +33,9 @@ php -f setup/index.php install \
 	--admin_password=admin123 \
 	--use_secure=0
 
-php -f dev/tools/Magento/Tools/View/deploy.php
-php -f dev/tools/Magento/Tools/Di/compiler.php
+# These are for production mode. Not used in developer mode.
+#php -f dev/tools/Magento/Tools/View/deploy.php
+#php -f dev/tools/Magento/Tools/Di/compiler.php
 
 # Run the web server
 exec /usr/sbin/apache2 -D FOREGROUND
