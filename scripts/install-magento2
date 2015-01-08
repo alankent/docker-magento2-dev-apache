@@ -4,7 +4,10 @@
 # It clones from the main GitHub repo.
 # See also http://alankent.wordpress.com/2014/08/02/magento-2-progress-towards-installation-via-composer/
 
-MAGENTO_TAG=0.42.0-beta1
+# The latest version of the code that passes test automation.
+MAGENTO_TAG=0.42.0-beta2
+# Sample data media files (images) are not pushed often because of their size.
+SAMPLEDATAMEDIA_TAG=0.42.0-beta1
 
 cd /tmp
 curl -sS https://getcomposer.org/installer | php
@@ -15,12 +18,14 @@ git clone https://github.com/magento/magento2.git
 cd magento2
 git checkout tags/$MAGENTO_TAG
 composer install
-#config repositories.foo composer http://packages.magento.com/
-#composer require magento/sample-data:$MAGENTO_TAG magento/sample-data-media:$MAGENTO_TAG
+
+# The following 2 lines download the Sample Data.
+composer config repositories.foo composer http://packages.magento.com/
+composer require magento/sample-data:$MAGENTO_TAG magento/sample-data-media:$SAMPLEDATAMEDIA_TAG
 
 echo "SetEnv MAGE_MODE developer" >> .htaccess
 
 find . -type d -exec chmod 700 {} \;
 find . -type f -exec chmod 600 {} \;
 
-chown www-data:www-data -R /var/www/magento2
+chown -R www-data:www-data /var/www/magento2
